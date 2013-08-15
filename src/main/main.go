@@ -6,11 +6,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"github.com/russross/blackfriday"
 )
 
 type Page struct {
 	Title string
 	Body  []byte
+	Render []byte
 }
 
 func (p *Page) save() error {
@@ -24,7 +26,8 @@ func loadPage(title string) (*Page, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Page{Title: title, Body: body}, nil
+	render := blackfriday.MarkdownCommon(body)
+	return &Page{Title: title, Body: body, Render:render}, nil
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
