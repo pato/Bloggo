@@ -1,4 +1,21 @@
-<h1>Blog Pages</h1>
-{{range $p := .Pages}}
-<p><a href="/view/{{$p}}">{{$p}}</a></p>
-{{end}}
+<html>
+<head>
+	<style type="text/css">
+		a, a:visited{
+			color: blue;
+			text-decoration: none;
+		}
+		a:hover{
+			color:red;
+		}
+	</style>
+</head>
+	<body>
+	<h1>Blog Pages</h1>
+	{{range $p := .Pages}}
+	<p>{{$p}} <a href="/view/{{$p}}">view</a> | <a href="/edit/{{$p}}">edit</a></p>
+	{{end}}
+	</body>
+	
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</html>
