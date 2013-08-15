@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"strings"
 	"github.com/russross/blackfriday"
 )
 
@@ -13,6 +14,10 @@ type Page struct {
 	Title string
 	Body  []byte
 	Render []byte
+}
+
+type HomePage struct{
+	Pages []string
 }
 
 func (p *Page) save() error {
@@ -28,6 +33,32 @@ func loadPage(title string) (*Page, error) {
 	}
 	render := blackfriday.MarkdownCommon(body)
 	return &Page{Title: title, Body: body, Render:render}, nil
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	if strings.Contains(r.URL.Path, ".") {
+		fmt.Printf("Served: %s\n", r.URL.Path)
+		chttp.ServeHTTP(w, r)
+	} else {
+		// fmt.Fprintf(w, "<html>\n")
+		// fmt.Fprintf(w, "<head>\n<style>\nbody{background-color:black;}\n.dir{color:#2BFF00; text-decoration:none;}\n.back{color:#FF0000; text-decoration:none;}\n.file{color:#FFFF00; text-decoration:none;}</style>\n</head>\n")
+
+		dir, _ := ioutil.ReadDir("." + r.URL.Path[1:])
+
+		var pages []string
+
+		for _, entry := range dir {
+			if strings.Contains(entry.Name(),".page") {
+				pages = append(pages, strings.TrimSuffix(entry.Name(),".page"))
+			}
+		}
+		// for _, r := range pages {
+		// 	name := strings.TrimSuffix(r,".page")
+		// 	fmt.Fprintf(w, "--- <a class='file' href='/view/%s'>%s</a><br>\n", name, r)
+		// }
+		//fmt.Fprintf(w, "</html>")
+		renderHome(w, HomePage{pages})
+	}
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
@@ -58,10 +89,17 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 }
 
-var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+var templates = template.Must(template.ParseFiles("edit.html", "view.html", "home.html"))
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 	err := templates.ExecuteTemplate(w, tmpl+".html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func renderHome(w http.ResponseWriter, h HomePage) {
+	err := templates.ExecuteTemplate(w, "home.html", h)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -82,8 +120,11 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
+var chttp = http.NewServeMux()
 func main() {
+	chttp.Handle("/", http.FileServer(http.Dir("c:/")))
 	fmt.Printf("Starting...\n")
+	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
