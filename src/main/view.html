@@ -7,8 +7,10 @@
 	<link href="/css/style.css" rel="stylesheet" media="screen">
 </head>
 	<body>
-		<h1>{{.Title}}</h1>
-		{{ printf "%s" .Render}}
+		<div class="container">
+			<h1>{{.Title}}</h1>
+			{{ printf "%s" .Render}}
+		</div>
 	</body>
 	
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>

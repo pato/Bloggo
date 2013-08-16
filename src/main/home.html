@@ -8,10 +8,12 @@
 	<link href="css/style.css" rel="stylesheet" media="screen">
 </head>
 	<body>
-		<h1>Blog Pages</h1>
-		{{range $p := .Pages}}
-		<p>{{$p}} <a href="/view/{{$p}}"><span class="glyphicon glyphicon-eye-open"></span> view</a> | <a href="/edit/{{$p}}"><span class="glyphicon glyphicon-pencil"></span> edit</a></p>
-		{{end}}
+		<div class="container">
+			<h1>Blog Pages</h1>
+			{{range $p := .Pages}}
+			<p>{{$p}} <a href="/view/{{$p}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span> view</a> <a href="/edit/{{$p}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> edit</a></p>
+			{{end}}
+		</div>
 	</body>
 	
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>

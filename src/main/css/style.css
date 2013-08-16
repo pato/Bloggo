@@ -5,3 +5,23 @@ a, a:visited{
 a:hover{
 	color:red;
 }
+body{
+	background-color:#009D91;
+	color:black;
+}
+.container{
+	margin-top: 20px;
+	padding:15px;
+	border: 1px solid #D9D9D9;
+		background-color: #FFFFFF;
+		-moz-box-shadow:    3px 3px 0px 0px #D9D9D9;
+		-webkit-box-shadow: 3px 3px 0px 0px #D9D9D9;
+		box-shadow:         3px 3px 0px 0px #D9D9D9;
+}
+
+/*
+#009D91 - light blue
+#1144AA - dark blue
+#FFA700 - light orange
+#FF6F00 - dark orange
+*/
