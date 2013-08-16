@@ -122,7 +122,7 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 
 var chttp = http.NewServeMux()
 func main() {
-	chttp.Handle("/", http.FileServer(http.Dir("c:/")))
+	chttp.Handle("/", http.FileServer(http.Dir(".")))
 	fmt.Printf("Starting...\n")
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/view/", makeHandler(viewHandler))

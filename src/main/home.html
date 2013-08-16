@@ -1,21 +1,18 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<style type="text/css">
-		a, a:visited{
-			color: blue;
-			text-decoration: none;
-		}
-		a:hover{
-			color:red;
-		}
-	</style>
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="css/style.css" rel="stylesheet" media="screen">
 </head>
 	<body>
-	<h1>Blog Pages</h1>
-	{{range $p := .Pages}}
-	<p>{{$p}} <a href="/view/{{$p}}">view</a> | <a href="/edit/{{$p}}">edit</a></p>
-	{{end}}
+		<h1>Blog Pages</h1>
+		{{range $p := .Pages}}
+		<p>{{$p}} <a href="/view/{{$p}}">view</a> | <a href="/edit/{{$p}}">edit</a></p>
+		{{end}}
 	</body>
 	
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </html>
