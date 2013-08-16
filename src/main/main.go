@@ -40,9 +40,6 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Served: %s\n", r.URL.Path)
 		chttp.ServeHTTP(w, r)
 	} else {
-		// fmt.Fprintf(w, "<html>\n")
-		// fmt.Fprintf(w, "<head>\n<style>\nbody{background-color:black;}\n.dir{color:#2BFF00; text-decoration:none;}\n.back{color:#FF0000; text-decoration:none;}\n.file{color:#FFFF00; text-decoration:none;}</style>\n</head>\n")
-
 		dir, _ := ioutil.ReadDir("." + r.URL.Path[1:])
 
 		var pages []string
@@ -52,11 +49,6 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 				pages = append(pages, strings.TrimSuffix(entry.Name(),".page"))
 			}
 		}
-		// for _, r := range pages {
-		// 	name := strings.TrimSuffix(r,".page")
-		// 	fmt.Fprintf(w, "--- <a class='file' href='/view/%s'>%s</a><br>\n", name, r)
-		// }
-		//fmt.Fprintf(w, "</html>")
 		renderHome(w, HomePage{pages})
 	}
 }
